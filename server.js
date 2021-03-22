@@ -36,7 +36,7 @@ console.log('The server is running.')
 /**************************************/
 /* Set up the web socket server */
 
-var io = require('socket.io').listen(app);
+var io = require('socket.io')(app)
 
 io.sockets.on('connection', function (socket) {
     function log() {
