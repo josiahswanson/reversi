@@ -87,7 +87,7 @@ io.sockets.on('connection', function (socket) {
             return;
         }
         var room = payload.room;
-        if(typeof room == 'undefined' || !room) {
+        if((typeof room == 'undefined') || !room) {
             var error_message = 'join_room didn\'t specify a room, command aborted';
             log(error_message);
             socket.emit('join_room_response', {
@@ -97,7 +97,7 @@ io.sockets.on('connection', function (socket) {
             return;
         }
         var username = payload.username;
-        if(typeof username == 'undefined' || !username) {
+        if((typeof username == 'undefined') || !username) {
             var error_message = 'join_room didn\'t specify a username, command aborted';
             log(error_message);
             socket.emit('join_room_response', {
@@ -108,7 +108,7 @@ io.sockets.on('connection', function (socket) {
         }
         socket.join(room);
         var roomObject = io.socket.adapter.room[room];
-        if(typeof roomObject == 'undefined' || !roomObject) {
+        if((typeof roomObject == 'undefined') || !roomObject) {
             var error_message = 'join_room couldn\'t crete a room (internal error), command aborted';
             log(error_message);
             socket.emit('join_room_response', {
@@ -117,7 +117,7 @@ io.sockets.on('connection', function (socket) {
             });
             return;
         }
-        var numClients = roomObject.lengt;
+        var numClients = roomObject.length;
         var success_data = {
             result: 'success',
             room: room,
@@ -125,6 +125,6 @@ io.sockets.on('connection', function (socket) {
             membership: (numClients + 1)
         }
         io.sockets.in(room).emit('join_room_response', success_data);
-        lof('Room ' + room + 'was just joined by ' + username + '.');
+        log('Room ' + room + 'was just joined by ' + username + '.');
     });
 });
