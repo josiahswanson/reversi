@@ -44,7 +44,7 @@ socket.on('join_room_response', function(payload) {
 
     /* If someone joined, then add a new row to the lobby table */
     var dom_elements = $('.socket_'+payload.socket_id);
-    
+
     /* If we don't already have an entry */
     if (dom_elements.length == 0) {
         var nodeA = $('<div></div>');
@@ -133,7 +133,7 @@ function send_message() {
 function makeInviteButton() {
     var newHTML = '<button type=\'button\' class=\'btn btn-outline-primary\'>Invite</button>';
     var newNode = $(newHTML);
-    return(newNODE);
+    return(newNode);
 }
 
 $(function(){
