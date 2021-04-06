@@ -39,7 +39,7 @@ console.log('The server is running.')
 /* A registry of socket_ids and player information */
 var players = [];
 
-var io = require('socket.io')(app)
+var io = require('socket.io')(app);
 
 io.sockets.on('connection', function (socket) {
 
@@ -137,6 +137,7 @@ io.sockets.on('connection', function (socket) {
         io.in(room).emit('join_room_response', success_data);
 
         for (var socket_in_room in roomObject.sockets) {
+            console.log(socket_in_room)
             var success_data = {
                 result: 'success',
                 room: room,
@@ -146,7 +147,7 @@ io.sockets.on('connection', function (socket) {
             };
             socket.emit('join_room_response', success_data);
         }
-        log('join_room_success');
+        log('join_room success');
     });
 
     socket.on('disconnect', function() {
@@ -232,7 +233,7 @@ io.sockets.on('connection', function (socket) {
             message: message
         }
 
-        io.sockets.in(room).emit('send_message_response', success_data);
+        io.in(room).emit('send_message_response', success_data);
         log('Message sent to room ' + room + ' by ' + username);
     });
 });
