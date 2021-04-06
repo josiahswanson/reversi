@@ -43,7 +43,7 @@ var io = require('socket.io')(app)
 
 io.sockets.on('connection', function (socket) {
 
-    log('Client connection by '+socket.id);
+    log('Client connection by ' + socket.id);
 
     function log() {
         var array = ['*** Server Log Message: '];
@@ -77,7 +77,7 @@ io.sockets.on('connection', function (socket) {
     */
 
     socket.on('join_room', function (payload) {
-        log('\'join_room\' command'+JSON.stringify(payload));
+        log('\'join_room\' command' + JSON.stringify(payload));
 
         /* Check that the client sent a payload */
         if (typeof payload == 'undefined' || !payload) {
@@ -135,21 +135,31 @@ io.sockets.on('connection', function (socket) {
             membership: numClients
         }
         io.in(room).emit('join_room_response', success_data);
-        for(var socket_in_room in roomObject.sockets) {
+        for (var socket_in_room in roomObject.sockets) {
             var success_data = {
                 result: 'success',
                 room: room,
-                username: players[socket_in_room].room,
+                username: players[socket_in_room].username,
                 socket_id: socket_in_room,
                 membership: numClients
             };
-            socket.emit('join_room_response',success_data);
+            socket.emit('join_room_response', success_data);
         }
         log('join_room_success');
     });
 
     socket.on('disconnect', function (socket) {
-        log('A website disconnected from the server');
+        log('Client disconnected ' + JSON.stringify(players[socket.id]));
+        if ('undefined' == typeof players[socket.id] && players[socket.id]) {
+            var username = players[socket.id].username;
+            var room = players[socket.id].room;
+            var payload = {
+                username: username,
+                socket_id: socket.id
+            };
+            delete players[socket.id];
+            io.in(room).emit('player_disconnected',payload);
+        }
     });
 
     /* send_message command */
