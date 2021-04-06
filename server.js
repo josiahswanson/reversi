@@ -123,7 +123,7 @@ io.sockets.on('connection', function (socket) {
         socket.join(room);
 
         /* Get the room object */
-        var roomObject = io.sockets.adapter.rooms;
+        var roomObject = io.sockets.adapter.rooms[room];
 
         /* Tell everyone that is already in the room that someone just joined */
         var numClients = roomObject.length;
@@ -135,6 +135,7 @@ io.sockets.on('connection', function (socket) {
             membership: numClients
         }
         io.in(room).emit('join_room_response', success_data);
+
         for (var socket_in_room in roomObject.sockets) {
             var success_data = {
                 result: 'success',
@@ -148,8 +149,9 @@ io.sockets.on('connection', function (socket) {
         log('join_room_success');
     });
 
-    socket.on('disconnect', function (socket) {
+    socket.on('disconnect', function() {
         log('Client disconnected ' + JSON.stringify(players[socket.id]));
+        
         if ('undefined' == typeof players[socket.id] && players[socket.id]) {
             var username = players[socket.id].username;
             var room = players[socket.id].room;
