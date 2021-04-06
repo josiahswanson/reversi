@@ -16,7 +16,7 @@ if (typeof(username) == 'undefined' || !username) {
     username = 'Anonymous_'+Math.random();
 }
 
-var chat_room = GetURLParameters('game_id');
+var chat_room = getURLParameters('game_id');
 if ('undefined' == typeof chat_room || !chat_room) {
     chat_room = 'lobby';
 }
