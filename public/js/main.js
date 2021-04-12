@@ -11,7 +11,7 @@ function GetURLParameters(whichParam) {
     }
 }
 
-var username = getURLParameters('username');
+var username = GetURLParameters('username');
 if (typeof(username) == 'undefined' || !username) {
     username = 'Anonymous_'+Math.random();
 }
