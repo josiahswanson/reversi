@@ -123,7 +123,7 @@ io.sockets.on('connection', function (socket) {
         socket.join(room);
 
         /* Get the room object */
-        var roomObject = io.sockets.adapter.rooms[room];
+        var roomObject = io.sockets.adapter.rooms;
 
         /* Tell everyone that is already in the room that someone just joined */
         var numClients = roomObject.length;
@@ -299,10 +299,12 @@ io.sockets.on('connection', function (socket) {
             return;
         }
 
+        /*
+
         var room = players[socket.id].room;
         var roomObject = io.sockets.adapter.rooms[room];
 
-        /* Make sure that the user being invited is in the room */
+        - Make sure that the user being invited is in the room -
         if(!roomObject.sockets.hasOwnProperty(requested_user)) {
             var error_message = 'invite requested a user that wasn\'t in the room, command aborted';
             log(error_message);
@@ -312,6 +314,8 @@ io.sockets.on('connection', function (socket) {
             });
             return;
         }
+
+        */
 
         /* If everything is okay, respond to the inviter that it was successful */
         var success_data = {
