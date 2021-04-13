@@ -160,7 +160,7 @@ io.sockets.on('connection', function (socket) {
                 socket_id: socket.id
             };
             delete players[socket.id];
-            io.in(room).emit('player_disconnected',payload);
+            io.sockets.in(room).emit('player_disconnected',payload);
         }
     });
 
@@ -232,7 +232,7 @@ io.sockets.on('connection', function (socket) {
             message: message
         }
 
-        io.in(room).emit('send_message_response', success_data);
+        io.sockets.in(room).emit('send_message_response', success_data);
         log('Message sent to room ' + room + ' by ' + username);
     });
 
@@ -327,7 +327,7 @@ io.sockets.on('connection', function (socket) {
         /* Tell the invitee that they have been invited */
         var success_data = {
             result: 'success',
-            socket_id: requested_user
+            socket_id: socket.id
         };
 
         socket.to(requested_user).emit('invited', success_data);
