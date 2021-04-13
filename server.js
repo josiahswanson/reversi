@@ -289,8 +289,8 @@ io.sockets.on('connection', function (socket) {
             return;
         }
         var requested_user = payload.requested_user;
-        if ((typeof requested_user == 'undefined') || !message) {
-            var error_message = 'invit didn\'t specify a username, command aborted';
+        if ((typeof requested_user == 'undefined') || !requested_user) {
+            var error_message = 'invite didn\'t specify a username, command aborted';
             log(error_message);
             socket.emit('invite_response', {
                 result: 'fail',
