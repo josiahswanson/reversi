@@ -80,7 +80,7 @@ io.sockets.on('connection', function (socket) {
         log('\'join_room\' command' + JSON.stringify(payload));
 
         /* Check that the client sent a payload */
-        if (typeof payload == 'undefined' || !payload) {
+        if (typeof payload === 'undefined' || !payload) {
             var error_message = 'join_room had no payload, command aborted';
             log(error_message);
             socket.emit('join_room_response', {
@@ -92,7 +92,7 @@ io.sockets.on('connection', function (socket) {
 
         /* Chceck that the payload has a room to join */
         var room = payload.room;
-        if ((typeof room == 'undefined') || !room) {
+        if ((typeof room === 'undefined') || !room) {
             var error_message = 'join_room didn\'t specify a room, command aborted';
             log(error_message);
             socket.emit('join_room_response', {
@@ -103,7 +103,7 @@ io.sockets.on('connection', function (socket) {
         }
         /* Check that a username has been provided */
         var username = payload.username;
-        if ((typeof username == 'undefined') || !username) {
+        if ((typeof username === 'undefined') || !username) {
             var error_message = 'join_room didn\'t specify a username, command aborted';
             log(error_message);
             socket.emit('join_room_response', {
@@ -123,10 +123,10 @@ io.sockets.on('connection', function (socket) {
         socket.join(room);
 
         /* Get the room object */
-        var roomObject = io.sockets.adapter.rooms;
+        var roomObject = io.sockets.adapter.rooms.get('lobby');
 
         /* Tell everyone that is already in the room that someone just joined */
-        var numClients = roomObject.length;
+        var numClients = roomObject.size;
         var success_data = {
             result: 'success',
             room: room,
@@ -136,8 +136,7 @@ io.sockets.on('connection', function (socket) {
         }
         io.in(room).emit('join_room_response', success_data);
 
-        for (var socket_in_room in roomObject.sockets) {
-            console.log(socket_in_room)
+        roomObject.forEach(socket_in_room => {
             var success_data = {
                 result: 'success',
                 room: room,
@@ -146,14 +145,14 @@ io.sockets.on('connection', function (socket) {
                 membership: numClients
             };
             socket.emit('join_room_response', success_data);
-        }
+        }); 
         log('join_room success');
     });
 
     socket.on('disconnect', function() {
         log('Client disconnected ' + JSON.stringify(players[socket.id]));
         
-        if ('undefined' == typeof players[socket.id] && players[socket.id]) {
+        if ('undefined' === typeof players[socket.id] && players[socket.id]) {
             var username = players[socket.id].username;
             var room = players[socket.id].room;
             var payload = {
@@ -186,7 +185,7 @@ io.sockets.on('connection', function (socket) {
     */
     socket.on('send_message', function (payload) {
         log('server received a command', 'send_message', payload);
-        if (typeof payload == 'undefined' || !payload) {
+        if (typeof payload === 'undefined' || !payload) {
             var error_message = 'send_message had no payload, command aborted';
             log(error_message);
             socket.emit('send_message_response', {
@@ -196,7 +195,7 @@ io.sockets.on('connection', function (socket) {
             return;
         }
         var room = payload.room;
-        if ((typeof room == 'undefined') || !room) {
+        if ((typeof room === 'undefined') || !room) {
             var error_message = 'send_message didn\'t specify a room, command aborted';
             log(error_message);
             socket.emit('send_message_response', {
@@ -206,7 +205,7 @@ io.sockets.on('connection', function (socket) {
             return;
         }
         var username = payload.username;
-        if ((typeof username == 'undefined') || !username) {
+        if ((typeof username === 'undefined') || !username) {
             var error_message = 'send_message didn\'t specify a username, command aborted';
             log(error_message);
             socket.emit('send_message_response', {
@@ -216,7 +215,7 @@ io.sockets.on('connection', function (socket) {
             return;
         }
         var message = payload.message;
-        if ((typeof message == 'undefined') || !message) {
+        if ((typeof message === 'undefined') || !message) {
             var error_message = 'send_message didn\'t specify a username, command aborted';
             log(error_message);
             socket.emit('send_message_response', {
@@ -267,7 +266,7 @@ io.sockets.on('connection', function (socket) {
         log('invite with'+JSON.stringify(payload));
 
         /* Check to make sure that a payload was sent */
-        if (typeof payload == 'undefined' || !payload) {
+        if (typeof payload === 'undefined' || !payload) {
             var error_message = 'invite had no payload, command aborted';
             log(error_message);
             socket.emit('invite_response', {
@@ -279,7 +278,7 @@ io.sockets.on('connection', function (socket) {
         
         /* Check that the message can be traced to a username */
         var username = players[socket.id].username;
-        if ((typeof username == 'undefined') || !username) {
+        if ((typeof username === 'undefined') || !username) {
             var error_message = 'invite can\'t identify who sent a username, command aborted';
             log(error_message);
             socket.emit('invite_response', {
@@ -289,7 +288,7 @@ io.sockets.on('connection', function (socket) {
             return;
         }
         var requested_user = payload.requested_user;
-        if ((typeof requested_user == 'undefined') || !requested_user) {
+        if ((typeof requested_user === 'undefined') || !requested_user) {
             var error_message = 'invite didn\'t specify a username, command aborted';
             log(error_message);
             socket.emit('invite_response', {
@@ -363,10 +362,10 @@ io.sockets.on('connection', function (socket) {
     }
     */
     socket.on('uninvite', function (payload) {
-        log('invite with'+JSON.stringify(payload));
+        log('uninvite with'+JSON.stringify(payload));
 
         /* Check to make sure that a payload was sent */
-        if (typeof payload == 'undefined' || !payload) {
+        if (typeof payload === 'undefined' || !payload) {
             var error_message = 'uninvite had no payload, command aborted';
             log(error_message);
             socket.emit('uninvite_response', {
@@ -378,7 +377,7 @@ io.sockets.on('connection', function (socket) {
         
         /* Check that the message can be traced to a username */
         var username = players[socket.id].username;
-        if ((typeof username == 'undefined') || !username) {
+        if ((typeof username === 'undefined') || !username) {
             var error_message = 'uninvite can\'t identify who sent a username, command aborted';
             log(error_message);
             socket.emit('uninvite_response', {
@@ -388,7 +387,7 @@ io.sockets.on('connection', function (socket) {
             return;
         }
         var requested_user = payload.requested_user;
-        if ((typeof requested_user == 'undefined') || !requested_user) {
+        if ((typeof requested_user === 'undefined') || !requested_user) {
             var error_message = 'uninvite didn\'t specify a username, command aborted';
             log(error_message);
             socket.emit('uninvite_response', {

@@ -164,7 +164,7 @@ socket.on('uninvited', function(payload) {
     alert(payload.message);
     return;
     }
-    var newNode = makeInviteButton();
+    var newNode = makeInviteButton(payload.socket_id);
     $('.socket_'+payload.socket_id+' button').replaceWith(newNode);
 });
 
