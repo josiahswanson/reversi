@@ -124,6 +124,7 @@ io.sockets.on('connection', function (socket) {
 
         /* Get the room object */
         var roomObject = io.sockets.adapter.rooms.get('lobby');
+        console.log(roomObject)
 
         /* Tell everyone that is already in the room that someone just joined */
         var numClients = roomObject.size;
@@ -160,7 +161,7 @@ io.sockets.on('connection', function (socket) {
                 socket_id: socket.id
             };
             delete players[socket.id];
-            io.sockets.in(room).emit('player_disconnected',payload);
+            io.in(room).emit('player_disconnected',payload);
         }
     });
 
