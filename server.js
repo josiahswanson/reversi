@@ -153,7 +153,7 @@ io.sockets.on('connection', function (socket) {
     socket.on('disconnect', function() {
         log('Client disconnected ' + JSON.stringify(players[socket.id]));
         
-        if ('undefined' === typeof players[socket.id] && players[socket.id]) {
+        if ('undefined' !== typeof players[socket.id] && players[socket.id]) {
             var username = players[socket.id].username;
             var room = players[socket.id].room;
             var payload = {

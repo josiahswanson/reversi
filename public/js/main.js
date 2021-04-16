@@ -89,6 +89,7 @@ socket.on('join_room_response', function(payload) {
 
 /* What to do when the server responds that someone left the room */
 socket.on('player_disconnected', function(payload) {
+    console.log('HIT H')
     if (payload.result == 'fail') {
     alert(payload.message);
     return;
