@@ -89,7 +89,6 @@ socket.on('join_room_response', function(payload) {
 
 /* What to do when the server responds that someone left the room */
 socket.on('player_disconnected', function(payload) {
-    console.log('HIT H')
     if (payload.result == 'fail') {
     alert(payload.message);
     return;
@@ -290,6 +289,7 @@ socket.on('game_update',function(payload) {
         /* Something weird is going on */
         /* Send client to lobby */
         window.location.href = 'lobby.html?username='+username;
+        return;
     }
 
     $('#my_color').html('<h3 id="my_color>I a '+my_color+'</h3>');

@@ -628,7 +628,7 @@ io.sockets.on('connection', function (socket) {
             return;
         }
         var color = payload.color;
-        if ((typeof row === 'undefined') || color != 'white' || color != 'black') {
+        if ((typeof row === 'undefined') || (color != 'white' && color != 'black')) {
             var error_message = 'play_token didn\'t specify a valid color, command aborted';
             log(error_message);
             socket.emit('play_token_response', {
@@ -717,30 +717,30 @@ function send_game_update(socket, game_id, message) {
 
     var roomObject;
     var numClients;
-    do {
-        roomObject = io.of("/").adapter.rooms;
-        numClients = roomObject.length;
-        if (numClients > 2) {
-            console.log('Too many clients in room ' + game_id + ' #: ' + numClients);
-            if (games[game_id].player_white.socket == roomObject.sockets[0]) {
-                games[game_id].player_white.socket = '';
-                games[game_id].player_white.username = '';
-            }
-            if (games[game_id].player_black.socket == roomObject.sockets[0]) {
-                games[game_id].player_black.socket = '';
-                games[game_id].player_black.username = '';
-            }
-            /* Kick em out*/
-            var sacrifice = Object.keys(roomObject.sockets)[0];
-            io.of('/').connected[sacrifice].leave(game_id);
-        }
-    } while ((numClients - 1) > 2);
+    // do {
+    //     roomObject = io.of("/").adapter.rooms;
+    //     numClients = roomObject.length;
+    //     if (numClients > 2) {
+    //         console.log('Too many clients in room ' + game_id + ' #: ' + numClients);
+    //         if (games[game_id].player_white.socket == roomObject.sockets[0]) {
+    //             games[game_id].player_white.socket = '';
+    //             games[game_id].player_white.username = '';
+    //         }
+    //         if (games[game_id].player_black.socket == roomObject.sockets[0]) {
+    //             games[game_id].player_black.socket = '';
+    //             games[game_id].player_black.username = '';
+    //         }
+    //         /* Kick em out*/
+    //         var sacrifice = Object.keys(roomObject.sockets)[0];
+    //         io.of('/').connected[sacrifice].leave(game_id);
+    //     }
+    // } while ((numClients - 1) > 2);
     /* Assign this socket a color */
     /* If current player isn't assigned color */
-    if ((games[game_id].player_white.socket != socket_id) && (games[game_id].player_black.socket != socket.id)) {
+    if ((games[game_id].player_white.socket != socket.id) && (games[game_id].player_black.socket != socket.id)) {
         console.log('Player isn\'t assigned a color: ' + socket.id);
         /* And there isn't a color to give them */
-        if ((games[game_id].player_black.socket != socket_id) && (games[game_id].player_white.socket != socket.id)) {
+        if ((games[game_id].player_black.socket != socket.id) && (games[game_id].player_white.socket != socket.id)) {
             games[game_id].player_white.socket = '';
             games[game_id].player_white.username = '';
             games[game_id].player_black.socket = '';
@@ -748,13 +748,13 @@ function send_game_update(socket, game_id, message) {
         }
     }
 
-    if(games[game_id].player_white.socket == '') {
+    if (games[game_id].player_white.socket == '') {
         if (games[game_id].player_black.socket != socket.id) {
             games[game_id].player_white.socket = socket.id;
             games[game_id].player_white.username = players[socket.id].username;
         }
     }
-    if(games[game_id].player_black.socket == '') {
+    if (games[game_id].player_black.socket == '') {
         if (games[game_id].player_white.socket != socket.id) {
             games[game_id].player_black.socket = socket.id;
             games[game_id].player_black.username = players[socket.id].username;
