@@ -264,6 +264,8 @@ var old_board = [
     ['?', '?', '?', '?', '?', '?', '?', '?', ]
 ]
 
+var my_color = ' ';
+
 socket.on('game_update',function(payload) {
     console.log('*** Client Log Message: \'game_update\'\n\tpayload: '+JSON.stringify(payload));
     if (payload.result == 'fail') {
@@ -280,6 +282,17 @@ socket.on('game_update',function(payload) {
     }
 
     /* Update my color */
+    if(socket.id == payload.game.player_white.socket) {
+        my_color = 'white';
+    } else if (socket.id == payload.game.player_black.socket) {
+        my_color = 'black';
+    } else {
+        /* Something weird is going on */
+        /* Send client to lobby */
+        window.location.href = 'lobby.html?username='+username;
+    }
+
+    $('#my_color').html('<h3 id="my_color>I a '+my_color+'</h3>');
 
     /* Animate changes to the board */
 
@@ -315,9 +328,34 @@ socket.on('game_update',function(payload) {
                 else if(old_board[row][column] == 'b' && board[row][column] == 'w') {
                     $('#'+row+'_'+column).html('<img src="assets/images/blacktowhite.gif" alt="white square"/>');
                 }
+
+                /* Set up interactivity */
+                $('#'+row+'_'+column).off('click');
+                if(board[row][column] == ' '){
+                    $('#'+row+'_'+column).addClass('hovered_over');
+                    $('#'+row+'_'+column).click(function(r,c) {
+                        return function() {
+                            var payload = {};
+                            payload.row = r;
+                            payload.column = c;
+                            payload.color = my_color;
+                            console.log('*** Client Log Message: \'play_token\' payload '+JSON.stringify(payload));
+                            socket.emit('play_token',payload);
+                        };
+                    }(row,column));
+                } else { $('#'+row+'_'+column).removeClass('hovered_over'); }
             }
         }
     }
 
     old_board = board;
-}) 
+});
+
+socket.on('play_token_response',function(payload) {
+    console.log('*** Client Log Message: \'play_token_response\'\n\tpayload: '+JSON.stringify(payload));
+    if (payload.result == 'fail') {
+        console.log(payload.message);
+        alert(payload.message);
+        return;
+    }
+});
