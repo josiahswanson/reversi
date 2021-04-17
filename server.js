@@ -718,7 +718,7 @@ function send_game_update(socket, game_id, message) {
     var roomObject;
     var numClients;
     do {
-        roomObjct = io.of("/").adapter.rooms;
+        roomObject = io.of("/").adapter.rooms;
         numClients = roomObject.length;
         if (numClients > 2) {
             console.log('Too many clients in room ' + game_id + ' #: ' + numClients);
