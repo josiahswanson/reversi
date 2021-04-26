@@ -845,7 +845,6 @@ function flip_line(who,dr,dc,r,c,board) {
 
 function flip_board(who, row, column, board) {
     flip_line(who, -1, -1, row, column, board);
-    flip_line(who, -1, -1, row, column, board);
     flip_line(who, -1, 0, row, column, board);
     flip_line(who, -1, 1, row, column, board);
 
