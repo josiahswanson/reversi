@@ -304,14 +304,14 @@ socket.on('game_update', function (payload) {
         return function() {
             var d = new Date();
             var elapsedmilli = d.getTime() - last_time;
-            var minutes = Math.floor(elapsedmilli / (60 * 1000));
-            var seconds = Math.floor((elapsedmilli % (60 * 1000)) / 1000);
+            var minutes = Math.floor(elapsedmilli / (60 * 1000)) + 1;
+            var seconds = Math.floor((elapsedmilli % (60 * 1000)) / 1000) + 46;
 
             if (seconds < 10) {
                 $('#elapsed').html(minutes + ' :0' + seconds);
             }
             else {
-                $('#elapsed').html(minutes + ':' + seconds);
+                $('#elapsed').html(minutes + ' :' + seconds);
             }
         }}(payload.game.last_move_time)
 
