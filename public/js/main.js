@@ -300,7 +300,7 @@ socket.on('game_update', function (payload) {
     $('#my_color').append('<h4>It is ' + payload.game.whose_turn + '\'s turn. Elapsed time <span id="elapsed"></span></h4>');
 
     clearInterval(interval_timer);
-    interval_time = setInterval(function (last_time) {
+    interval_timer = setInterval(function (last_time) {
         return function() {
             var d = new Date();
             var elapsedmilli = d.getTime() - last_time;
