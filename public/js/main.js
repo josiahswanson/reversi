@@ -301,18 +301,19 @@ socket.on('game_update', function (payload) {
 
     clearInterval(interval_timer);
     interval_time = setInterval(function (last_time) {
-        return function () {
-            var d = Date();
+        return function() {
+            var d = new Date();
             var elapsedmilli = d.getTime() - last_time;
             var minutes = Math.floor(elapsedmilli / (60 * 1000));
             var seconds = Math.floor((elapsedmilli % (60 * 1000)) / 1000);
 
             if (seconds < 10) {
-                $('#elapsed').html(minutes + ' : ' + minutes);
+                $('#elapsed').html(minutes + ' :0' + seconds);
             }
-            else $('#elapsed').html(minutes + ' : ' + seconds);
-        }
-    }
+            else {
+                $('#elapsed').html(minutes + ':' + seconds);
+            }
+        }}(payload.game.last_move_time)
 
         , 1000);
 
