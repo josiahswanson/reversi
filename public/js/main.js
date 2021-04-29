@@ -212,7 +212,7 @@ socket.on('send_message_response', function (payload) {
 });
 
 function makeInviteButton(socket_id) {
-    var newHTML = '<button type=\'button\' class=\'btn btn-outline-primary\'>Invite</button>';
+    var newHTML = '<button type=\'button\' class=\'btn\'>Invite</button>';
     var newNode = $(newHTML);
     newNode.click(function () {
         invite(socket_id);
@@ -221,7 +221,7 @@ function makeInviteButton(socket_id) {
 }
 
 function makeInvitedButton(socket_id) {
-    var newHTML = '<button type=\'button\' class=\'btn btn-primary\'>Invited</button>';
+    var newHTML = '<button type=\'button\' class=\'btn\'>Invited</button>';
     var newNode = $(newHTML);
     newNode.click(function () {
         uninvite(socket_id);
@@ -230,7 +230,7 @@ function makeInvitedButton(socket_id) {
 }
 
 function makePlayButton(socket_id) {
-    var newHTML = '<button type=\'button\' class=\'btn btn-success\'>Play</button>';
+    var newHTML = '<button type=\'button\' class=\'btn\'>Play</button>';
     var newNode = $(newHTML);
     newNode.click(function () {
         game_start(socket_id);
@@ -239,7 +239,7 @@ function makePlayButton(socket_id) {
 }
 
 function makeEngagedButton() {
-    var newHTML = '<button type=\'button\' class=\'btn btn-danger\'>Engaged</button>';
+    var newHTML = '<button type=\'button\' class=\'btn\'>Engaged</button>';
     var newNode = $(newHTML);
     return (newNode);
 }
@@ -296,8 +296,8 @@ socket.on('game_update', function (payload) {
         return;
     }
 
-    $('#my_color').html('<h3 id="my_color">I am ' + my_color + '</h3>');
-    $('#my_color').append('<h4>It is ' + payload.game.whose_turn + '\'s turn. Elapsed time <span id="elapsed"></span></h4>');
+    $('#my_color').html('<h3 style="font-size: 23px; font-family: \'Georgia\'" id="my_color">I am ' + my_color + '</h3>');
+    $('#my_color').append('<h4 style="font-size: 26px; font-family: \'Georgia\'">It is ' + payload.game.whose_turn + '\'s turn. Elapsed time<br><span id="elapsed"></span></h4>');
 
     clearInterval(interval_timer);
     interval_timer = setInterval(function (last_time) {
